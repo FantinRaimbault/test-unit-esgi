@@ -63,8 +63,6 @@ import Item from './model/Item';
                 } else {
                     res.status(400).json({ status: `A new item can only be created if the last item is older than 30 minutes, current: ${differenceBetweenLastItemDateAndNow} minutes` });
                 }
-                res.status(200).json({ status: 'Item !' });
-
             } else {
                 res.status(404).json({ status: 'toDoList not found' });
             }  
