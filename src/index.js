@@ -4,7 +4,7 @@ import User from './model/User';
 
 (async () => {
     try {
-        await mongoose.connect("mongodb+srv://root:root@backend-framework.sqzs7.mongodb.net/unit-test-esgi?retryWrites=true&w=majority");
+        await mongoose.connect("mongodb+srv://root:root@backend-framework.sqzs7.mongodb.net/unit-test-esgi?retryWrites=true&w=majority", { tls: true, tlsAllowInvalidCertificates: true });
     
         const server = express();
         server.get('/', (req, res) => { res.status(200).json({ status: 'ok' }) });
