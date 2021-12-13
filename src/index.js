@@ -12,7 +12,7 @@ import User from './model/User';
         server.post('/users', (req, res) => { 
             const newUser = new User(req.body);
 
-            if (!newUser.isValid) {
+            if (!newUser.isValid()) {
                 newUser.save()
                 res.status(200)
             } else {
