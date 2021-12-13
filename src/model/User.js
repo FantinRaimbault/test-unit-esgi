@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
+import mongoose from 'mongoose';
 
-export class User {
+class UserC {
     constructor({ email, firstName, lastName, birthDate, apiEmailValidator }) {
         Object.assign(this, { email, firstName, lastName, birthDate: new Date(birthDate), apiEmailValidator })
     }
@@ -18,17 +19,13 @@ export class User {
     }
 }
 
-export function test() {
-    
-}
+const userSchema = new mongoose.Schema({
+    email: String,
+    birthDate: Date,
+    lastName: String,
+    firstName: String,
+    password: String,
+})
 
-
-// const user = new User({
-//     email: 'fantin@malou.io',
-//     birthDate: new Date(2000, 10, 20),
-//     lastName: 'Raimbault',
-//     firstName: 'Fantin'
-// })
-// console.log(
-//     user.isValid()
-// )
+const User = mongoose.model('User', userSchema);
+export default User;
