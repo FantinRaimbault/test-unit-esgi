@@ -1,24 +1,6 @@
 import { DateTime } from 'luxon'
 import mongoose from 'mongoose';
 
-class UserC {
-    constructor({ email, firstName, lastName, birthDate, apiEmailValidator }) {
-        Object.assign(this, { email, firstName, lastName, birthDate: new Date(birthDate), apiEmailValidator })
-    }
-
-    // isValid() {
-    //     return !!(this.firstName && this.lastName && this.email.match(/^\S+@\S+\.\S+$/) && this._checkAge())
-    // }
-    
-    isValid() {
-        return !!(this.firstName && this.lastName && this.apiEmailValidator.check(this.email) && this._checkAge())
-    }
-
-    _checkAge(requiredAge = 13) {
-        return DateTime.fromJSDate(this.birthDate).diffNow('years').years < -requiredAge;
-    }
-}
-
 const userSchema = new mongoose.Schema({
     email: String,
     birthDate: Date,
@@ -26,6 +8,15 @@ const userSchema = new mongoose.Schema({
     firstName: String,
     password: String,
 })
+
+userSchema.methods.isValid = function () {
+    return !!(this.firstName
+        && this.lastName
+        && this.email.match(/^\S+@\S+\.\S+$/)
+        && DateTime.fromJSDate(this.birthDate).diffNow('years').years < - 13
+        && this.password.length > 7
+        && this.password.length < 41)
+}
 
 const User = mongoose.model('User', userSchema);
 export default User;
