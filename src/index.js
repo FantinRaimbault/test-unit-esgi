@@ -19,7 +19,7 @@ import ToDoList from './model/ToDoList';
                 res.status(200).json({ status: 'User created !', user: newUser  });
             } else {
                 res.status(400).json({ status: 'Invalid user' });
-            }     
+            }
         })
 
         server.post('/toDoList/:userId', async (req, res) => {

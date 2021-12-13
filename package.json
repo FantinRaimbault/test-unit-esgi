@@ -26,6 +26,12 @@
         "@types/jest": "^27.0.2",
         "express": "^4.17.1",
         "luxon": "^2.0.2",
-        "mongoose": "^6.1.1"
+        "mongoose": "^6.1.1",
+        "regenerator-runtime": "^0.13.9"
+    },
+    "jest": {
+        "setupFilesAfterEnv": [
+            "./pathToYour/setupTests.js"
+        ]
     }
 }
