@@ -10,14 +10,14 @@ import Item from './model/Item';
     
         const server = express();
         server.use(express.json());
-        server.get('/', (req, res) => { res.status(200).json({ status: 'ok' }) });
+        server.get('/', async (req, res) => { res.status(200).json({ status: 'ok' }) });
 
         server.post('/users', async (req, res) => { 
             const newUser = new User(req.body);
 
-            if (!newUser.isValid()) {
+            if (newUser.isValid()) {
                 await newUser.save();
-                res.status(200).json({ status: 'User created !' });
+                res.status(200).json({ status: 'User created !', user: newUser  });
             } else {
                 res.status(400).json({ status: 'Invalid user' });
             }     
@@ -28,14 +28,12 @@ import Item from './model/Item';
             const user = await User.findById(req.params.userId);
 
             if (user) {
-                const toDoListCountOfUser = await ToDoList.countDocuments({ user: user._id });
-
-                if (toDoListCountOfUser === 0) {
+                if (user.isValid() && !user.hasATodolist()) {
                     const toDoList = new ToDoList({ ...req.body, user: user._id });
                     await toDoList.save();
-                    res.status(200).json({ status: 'ToDoList created !' });
+                    res.status(200).json({ status: 'ToDoList created !', toDoList });
                 } else {
-                    res.status(400).json({ status: 'User already has a toDoList' });
+                    res.status(400).json({ status: 'User can\'t create a todolist' });
                 }
             } else {
                 res.status(404).json({ status: 'User not found' });
