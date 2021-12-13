@@ -20,7 +20,7 @@ userSchema.methods.isValid = function () {
 }
 
 userSchema.methods.hasATodolist = async function () {
-    const todolist = await ToDoList.findOne({ userId: this._id })
+    const todolist = await ToDoList.findOne({ user: this._id })
     return !!todolist
 }
 

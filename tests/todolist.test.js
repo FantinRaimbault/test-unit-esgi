@@ -24,10 +24,8 @@ describe('test user functions', () => {
             password: 'azertyuiop',
         });
 
-        const res = await user.hasATodolist()
-
         expect(
-            res
+            await user.hasATodolist()
         ).toBe(true);
     });
 

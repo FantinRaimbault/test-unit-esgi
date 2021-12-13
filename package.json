@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
+    "type": "module",
     "scripts": {
         "dev": "nodemon --exec babel-node src/index.js",
         "start": "babel-node src/index.js",
@@ -28,10 +29,5 @@
         "luxon": "^2.0.2",
         "mongoose": "^6.1.1",
         "regenerator-runtime": "^0.13.9"
-    },
-    "jest": {
-        "setupFilesAfterEnv": [
-            "./pathToYour/setupTests.js"
-        ]
     }
 }
