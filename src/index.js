@@ -48,6 +48,10 @@ import Item from './model/Item';
                 
                 const items = await Item.find({ toDoList: toDoList._id });
 
+                if (items.length + 1 > 10) {
+                    res.status(400).json({ status: 'ToDoList can\'t have more than 10 items' });
+                }
+
                 const lastItem = items[items.length - 1];
 
                 const differenceBetweenLastItemDateAndNow = Math.abs(Math.round((Date.now() - lastItem.createdAt.getTime()) / 1000 / 60))
