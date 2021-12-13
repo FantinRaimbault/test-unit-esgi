@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import Item from './Item';
 
 const toDoListSchema = new mongoose.Schema({
     title: { type: String, required: true },
