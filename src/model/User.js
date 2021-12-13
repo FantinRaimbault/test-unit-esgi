@@ -19,9 +19,9 @@ userSchema.methods.isValid = function () {
         && this.password.length < 41)
 }
 
-userSchema.methods.hasATodolist = async function () {
-    const todolist = await ToDoList.findOne({ user: this._id })
-    return !!todolist
+userSchema.methods.canCreateAToDoList = async function () {
+    const toDoList = await ToDoList.findOne({ user: this._id })
+    return (this.isValid() && !toDoList)
 }
 
 const User = mongoose.model('User', userSchema);

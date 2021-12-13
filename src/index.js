@@ -28,7 +28,7 @@ import Item from './model/Item';
             const user = await User.findById(req.params.userId);
 
             if (user) {
-                if (user.isValid() && (await !user.hasATodolist())) {
+                if (await user.canCreateAToDoList()) {
                     const toDoList = new ToDoList({ ...req.body, user: user._id });
                     await toDoList.save();
                     res.status(200).json({ status: 'ToDoList created !', toDoList });
@@ -41,34 +41,36 @@ import Item from './model/Item';
         });
 
         server.post('/items/:toDoList', async (req, res) => {
+            try {
+                const toDoList = await ToDoList.findById(req.params.toDoList);
+                if (toDoList) {
+                    await toDoList.addItem({ ...req.body })
+                    // const items = await Item.find({ toDoList: toDoList._id });
 
-            const toDoList = await ToDoList.findById(req.params.toDoList);
+                    // if (items.length + 1 > 10) {
+                    //     res.status(400).json({ status: 'ToDoList can\'t have more than 10 items' });
+                    // }
 
-            if (toDoList) {
+                    // const lastItem = items[items.length - 1];
 
-                const items = await Item.find({ toDoList: toDoList._id });
+                    // const differenceBetweenLastItemDateAndNow = Math.abs(Math.round((Date.now() - lastItem.createdAt.getTime()) / 1000 / 60))
 
-                if (items.length + 1 > 10) {
-                    res.status(400).json({ status: 'ToDoList can\'t have more than 10 items' });
-                }
-
-                const lastItem = items[items.length - 1];
-
-                const differenceBetweenLastItemDateAndNow = Math.abs(Math.round((Date.now() - lastItem.createdAt.getTime()) / 1000 / 60))
-
-                if (lastItem === undefined || differenceBetweenLastItemDateAndNow >= 30) {
-                    try {
-                        const item = new Item({ ...req.body, toDoList: toDoList._id });
-                        await item.save();
-                        res.status(200).json({ status: 'Item created !' });
-                    } catch (e) {
-                        res.status(200).json({ status: 'Problem with the creation of item !' });
-                    }
+                    // if (lastItem === undefined || differenceBetweenLastItemDateAndNow >= 30) {
+                    //     try {
+                    //         const item = new Item({ ...req.body, toDoList: toDoList._id });
+                    //         await item.save();
+                    //         res.status(200).json({ status: 'Item created !' });
+                    //     } catch (e) {
+                    //         res.status(200).json({ status: 'Problem with the creation of item !' });
+                    //     }
+                    // } else {
+                    //     res.status(400).json({ status: `A new item can only be created if the last item is older than 30 minutes, current: ${differenceBetweenLastItemDateAndNow} minutes` });
+                    // }
                 } else {
-                    res.status(400).json({ status: `A new item can only be created if the last item is older than 30 minutes, current: ${differenceBetweenLastItemDateAndNow} minutes` });
+                    res.status(404).json({ status: 'toDoList not found' });
                 }
-            } else {
-                res.status(404).json({ status: 'toDoList not found' });
+            } catch(error) {
+                res.status(500).json({ error });
             }
         });
 
