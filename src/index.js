@@ -7,6 +7,7 @@ import User from './model/User';
         await mongoose.connect("mongodb+srv://root:root@backend-framework.sqzs7.mongodb.net/unit-test-esgi?retryWrites=true&w=majority", { tls: true, tlsAllowInvalidCertificates: true });
     
         const server = express();
+        server.use(express.json())
         server.get('/', (req, res) => { res.status(200).json({ status: 'ok' }) });
 
         server.post('/users', (req, res) => { 
@@ -14,9 +15,9 @@ import User from './model/User';
 
             if (!newUser.isValid()) {
                 newUser.save()
-                res.status(200)
+                res.status(200).json({ status: 'User created !' })
             } else {
-                res.status(400).json({ error: 'Invalid user' })
+                res.status(400).json({ status: 'Invalid user' })
             }     
         });
     
