@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon'
 import mongoose from 'mongoose';
 
 const toDoListSchema = new mongoose.Schema({
