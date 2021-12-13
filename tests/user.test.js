@@ -1,57 +1,101 @@
 import { DateTime } from 'luxon';
-import { ApiEmailValidator } from '../src/ApiEmailValidator';
-import { User } from '../src/User';
+import User from '../src/model/User';
 
 describe('test user functions', () => {
 
-
     it('should be a good user validation', () => {
-        const apiEmailValidator = new ApiEmailValidator()
-        apiEmailValidator.check = jest.fn((email) => true)
         const user = new User({
-            email: 'fantin@malou.io',
+            _id: '507f191e810c19729de860ea',
+            name: 'name',
+            email: 'name@email.com',
             birthDate: DateTime.now().minus({ years: 20 }).toJSDate(),
-            lastName: 'Raimbault',
-            firstName: 'Fantin',
-            apiEmailValidator
-        })
+            lastName: 'Lastname',
+            firstName: 'John',
+            password: 'azertyuiop',
+        });
+
         expect(
             user.isValid()
         ).toBe(true);
     });
-    
-    // it('should be a wrong user validation because of birth date', () => {
-    //     const user = new User({
-    //         email: 'fantin@malou.io',
-    //         birthDate: DateTime.now().minus({ years: 10 }).toJSDate(),
-    //         lastName: 'Raimbault',
-    //         firstName: 'Fantin'
-    //     })
-    //     expect(
-    //         user.isValid()
-    //     ).toBe(false);
-    // });
-    
-    // it('should be a wrong user validation because of email', () => {
-    //     const user = new User({
-    //         email: 'fantinmalou.io',
-    //         birthDate: DateTime.now().minus({ years: 20 }).toJSDate(),
-    //         lastName: 'Raimbault',
-    //         firstName: 'Fantin'
-    //     })
-    //     expect(
-    //         user.isValid()
-    //     ).toBe(false);
-    // });
-    
-    // it('should be a wrong user validation because of firstName', () => {
-    //     const user = new User({
-    //         email: 'fantinmalou.io',
-    //         birthDate: DateTime.now().minus({ years: 20 }).toJSDate(),
-    //         lastName: 'Raimbault',
-    //     })
-    //     expect(
-    //         user.isValid()
-    //     ).toBe(false);
-    // });
+
+    test('check age just before 13', () => {
+        const user = new User({
+            _id: '507f191e810c19729de860ea',
+            name: 'name',
+            email: 'name@email.com',
+            birthDate: DateTime.now().minus({ years: 13 }).plus({ day: 1 }).toJSDate(),
+            lastName: 'Lastname',
+            firstName: 'John',
+            password: 'azertyuiop',
+        });
+
+        expect(
+            user.isValid()
+        ).toBe(false);
+    });
+
+    test('check age just after 13', () => {
+        const user = new User({
+            _id: '507f191e810c19729de860ea',
+            name: 'name',
+            email: 'name@email.com',
+            birthDate: DateTime.now().minus({ years: 13 }).toJSDate(),
+            lastName: 'Lastname',
+            firstName: 'John',
+            password: 'azertyuiop',
+        });
+
+        expect(
+            user.isValid()
+        ).toBe(true);
+    });
+
+    test('check password more than 40 characters', () => {
+        const user = new User({
+            _id: '507f191e810c19729de860ea',
+            name: 'name',
+            email: 'name@email.com',
+            birthDate: DateTime.now().minus({ years: 13 }).toJSDate(),
+            lastName: 'Lastname',
+            firstName: 'John',
+            password: new Array(41).fill('a').join(''),
+        });
+
+        expect(
+            user.isValid()
+        ).toBe(false);
+    });
+
+    test('check password under than 8 characters', () => {
+        const user = new User({
+            _id: '507f191e810c19729de860ea',
+            name: 'name',
+            email: 'name@email.com',
+            birthDate: DateTime.now().minus({ years: 13 }).toJSDate(),
+            lastName: 'Lastname',
+            firstName: 'John',
+            password: 'azertyu',
+        });
+
+        expect(
+            user.isValid()
+        ).toBe(false);
+    });
+
+    test('check email', () => {
+        const user = new User({
+            _id: '507f191e810c19729de860ea',
+            name: 'name',
+            email: 'nameemail.com',
+            birthDate: DateTime.now().minus({ years: 13 }).toJSDate(),
+            lastName: 'Lastname',
+            firstName: 'John',
+            password: 'azertyu',
+        });
+
+        expect(
+            user.isValid()
+        ).toBe(false);
+    });
 })    
