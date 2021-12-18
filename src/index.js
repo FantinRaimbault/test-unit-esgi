@@ -2,7 +2,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 import User from './model/User';
 import ToDoList from './model/ToDoList';
-import Item from './model/Item';
 
 (async () => {
     try {
