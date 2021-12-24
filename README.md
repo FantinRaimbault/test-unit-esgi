@@ -36,13 +36,12 @@ Response :
 {
     "status": "User created !",
     "user": {
-        "email": "namee@email.com",
+        "name": "name",
+        "email": "teacher@email.com",
         "birthDate": "2000-12-13T11:20:12.175Z",
         "lastName": "Lastname",
         "firstName": "John",
-        "password": "azertyuiop",
-        "_id": "61c653e8c01c3350a4976e3d",
-        "__v": 0
+        "password": "azertyuiop"
     }
 }
 ```
@@ -61,7 +60,7 @@ Response:
 {
     "status": "ToDoList created !",
     "toDoList": {
-        "title": "un title wsh",
+        "title": "a title",
         "user": "61c653e8c01c3350a4976e3d",
         "_id": "61c6545239f9e044ffc928f6",
         "__v": 0
