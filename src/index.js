@@ -49,7 +49,8 @@ import ToDoList from './model/ToDoList';
                     res.status(404).json({ status: 'toDoList not found' });
                 }
             } catch(error) {
-                res.status(500).json({ error });
+                console.log(error)
+                res.status(500).json({ error: error.message });
             }
         });
 

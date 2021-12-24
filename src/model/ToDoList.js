@@ -16,13 +16,16 @@ toDoListSchema.methods.addItem = async function (item) {
         throw new Error('Item value too long')
     }
     if (nbItems === 7)  {
-        ApiSendEmail.send('dev@dev.com', 'you can only add two additional elements')
+        const { user: { email } } = await this.populate('user')
+        ApiSendEmail.send(email, 'you can only add two additional elements')
     }
 
-    const lastItem = await Item.findOne({ toDoList: this._id }, {}, { sort: { 'created_at': -1 } })
-    const differenceBetweenLastItemDateAndNow = Math.abs(Math.round((Date.now() - lastItem.createdAt.getTime()) / 1000 / 60))
-    if (differenceBetweenLastItemDateAndNow <= 30) {
-        throw new Error('Cant add item now, please wait 30 mins')
+    if (nbItems > 0) {
+        const lastItem = await Item.findOne({ toDoList: this._id }, {}, { sort: { 'created_at': -1 } })
+        const differenceBetweenLastItemDateAndNow = Math.abs(Math.round((Date.now() - lastItem.createdAt.getTime()) / 1000 / 60))
+        if (differenceBetweenLastItemDateAndNow <= 30) {
+            throw new Error('Cant add item now, please wait 30 mins')
+        }
     }
     return new Item({ ...item, toDoList: this._id }).save();
 }
