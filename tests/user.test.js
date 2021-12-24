@@ -19,7 +19,7 @@ describe('test user functions', () => {
         ).toBe(true);
     });
 
-    test('check age just before 13', () => {
+    test('age just before 13', () => {
         const user = new User({
             _id: '507f191e810c19729de860ea',
             name: 'name',
@@ -35,7 +35,7 @@ describe('test user functions', () => {
         ).toBe(false);
     });
 
-    test('check age just after 13', () => {
+    test('age just after 13', () => {
         const user = new User({
             _id: '507f191e810c19729de860ea',
             name: 'name',
@@ -51,7 +51,7 @@ describe('test user functions', () => {
         ).toBe(true);
     });
 
-    test('check password more than 40 characters', () => {
+    test('password more than 40 characters', () => {
         const user = new User({
             _id: '507f191e810c19729de860ea',
             name: 'name',
@@ -67,7 +67,7 @@ describe('test user functions', () => {
         ).toBe(false);
     });
 
-    test('check password under than 8 characters', () => {
+    test('password under than 8 characters', () => {
         const user = new User({
             _id: '507f191e810c19729de860ea',
             name: 'name',
@@ -83,7 +83,7 @@ describe('test user functions', () => {
         ).toBe(false);
     });
 
-    test('check email', () => {
+    test('wrong email', () => {
         const user = new User({
             _id: '507f191e810c19729de860ea',
             name: 'name',

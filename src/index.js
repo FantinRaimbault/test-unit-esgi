@@ -5,11 +5,12 @@ import ToDoList from './model/ToDoList';
 
 (async () => {
     try {
+        // yes, we know this is a bad practice to put the string connection in the code
         await mongoose.connect("mongodb+srv://root:root@backend-framework.sqzs7.mongodb.net/unit-test-esgi?retryWrites=true&w=majority", { tls: true, tlsAllowInvalidCertificates: true });
 
         const server = express();
         server.use(express.json());
-        server.get('/', async (req, res) => { res.status(200).json({ status: 'ok' }) });
+        server.get('/', async (req, res) => { res.status(200).json({ status: 'api up ! :)' }) });
 
         server.post('/users', async (req, res) => {
             const newUser = new User(req.body);
@@ -23,7 +24,6 @@ import ToDoList from './model/ToDoList';
         });
 
         server.post('/toDoLists/:userId', async (req, res) => {
-
             const user = await User.findById(req.params.userId);
 
             if (user) {
@@ -43,28 +43,8 @@ import ToDoList from './model/ToDoList';
             try {
                 const toDoList = await ToDoList.findById(req.params.toDoList);
                 if (toDoList) {
-                    await toDoList.addItem({ ...req.body })
-                    // const items = await Item.find({ toDoList: toDoList._id });
-
-                    // if (items.length + 1 > 10) {
-                    //     res.status(400).json({ status: 'ToDoList can\'t have more than 10 items' });
-                    // }
-
-                    // const lastItem = items[items.length - 1];
-
-                    // const differenceBetweenLastItemDateAndNow = Math.abs(Math.round((Date.now() - lastItem.createdAt.getTime()) / 1000 / 60))
-
-                    // if (lastItem === undefined || differenceBetweenLastItemDateAndNow >= 30) {
-                    //     try {
-                    //         const item = new Item({ ...req.body, toDoList: toDoList._id });
-                    //         await item.save();
-                    //         res.status(200).json({ status: 'Item created !' });
-                    //     } catch (e) {
-                    //         res.status(200).json({ status: 'Problem with the creation of item !' });
-                    //     }
-                    // } else {
-                    //     res.status(400).json({ status: `A new item can only be created if the last item is older than 30 minutes, current: ${differenceBetweenLastItemDateAndNow} minutes` });
-                    // }
+                    const item = await toDoList.addItem({ ...req.body })
+                    res.status(200).json({ status: 'Item pushed !', item });
                 } else {
                     res.status(404).json({ status: 'toDoList not found' });
                 }
