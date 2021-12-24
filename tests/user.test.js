@@ -40,7 +40,7 @@ describe('test user functions', () => {
             _id: '507f191e810c19729de860ea',
             name: 'name',
             email: 'name@email.com',
-            birthDate: DateTime.now().minus({ years: 13 }).toJSDate(),
+            birthDate: DateTime.now().minus({ years: 13, second: 1 }).toJSDate(),
             lastName: 'Lastname',
             firstName: 'John',
             password: 'azertyuiop',

@@ -79,7 +79,7 @@ describe('test user functions', () => {
     })
 
     it('shouldnt be possible to add an item until 30mins have not elapsed', async () => {
-        jest.spyOn(Item, 'countDocuments').mockResolvedValue(0)
+        jest.spyOn(Item, 'countDocuments').mockResolvedValue(1)
         jest.spyOn(Item, 'findOne').mockResolvedValue({
             name: 'a name',
             content: 'value',
@@ -116,6 +116,15 @@ describe('test user functions', () => {
             _id: '507f191e810c19729de860ea',
             title: 'un title',
         })
+
+        todolist.populate = jest.fn(() => Promise.resolve({
+            title: 'un title wsh',
+            user: {
+                email: 'namee@email.com',
+                lastName: 'Lastname',
+                firstName: 'John',
+            }
+        }));
 
         await todolist.addItem({
             name: 'value',
